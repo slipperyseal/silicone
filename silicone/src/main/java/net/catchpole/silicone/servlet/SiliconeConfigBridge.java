@@ -14,23 +14,26 @@ package net.catchpole.silicone.servlet;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.session.MemorySessionPersist;
 import net.catchpole.silicone.SessionPersist;
 import net.catchpole.silicone.SiliconeConfig;
 import net.catchpole.silicone.action.Action;
 import net.catchpole.silicone.action.Actions;
-import net.catchpole.silicone.action.annotation.Endpoint;
+import net.catchpole.silicone.action.Endpoint;
 import net.catchpole.silicone.lang.reflect.Reflection;
 import net.catchpole.silicone.render.*;
 import net.catchpole.silicone.resource.ServletContextResourceSource;
+import net.catchpole.silicone.session.MemorySessionPersist;
 
 import javax.servlet.ServletConfig;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SiliconeConfigBridge implements SiliconeConfig {
     private final RenderSelector renderSelector = new RenderSelector();
     private final Actions actions;
     private final Reflection reflection = new Reflection();
     private SessionPersist sessionPersist;
+    private final Map<String,Class> endpointInputTypes = new HashMap<String, Class>();
 
     public SiliconeConfigBridge(ServletConfig servletConfig, Actions actions) {
         this.actions = actions;
@@ -76,9 +79,14 @@ public class SiliconeConfigBridge implements SiliconeConfig {
         return sessionPersist;
     }
 
-    public void registerGlobalEndpoint(Object artefact) {
-        String service = artefact.getClass().getSimpleName().toLowerCase();
-        this.addRender("service/json/" + service, new JsonObjectRender(artefact));
+    public void registerGlobalEndpoint(Endpoint endpoint) {
+        String service = endpoint.getClass().getSimpleName().toLowerCase();
+        Class[] paramTypes = reflection.getParameterTypes(endpoint.getClass(), Endpoint.class);
+        if (paramTypes.length != 2) {
+            throw new IllegalArgumentException(endpoint.getClass() + " requires generics Input and Output types");
+        }
+        endpointInputTypes.put(service, paramTypes[0]);
+        this.addRender("service/json/" + service, new JsonEndpointRender(endpoint));
     }
 
     public void registerArtefact(Class artefactClass) {
@@ -87,5 +95,9 @@ public class SiliconeConfigBridge implements SiliconeConfig {
             this.addRender("service/xml/" + service, new XmlRender(artefactClass));
             this.addRender("service/json/" + service, new JsonRender(artefactClass));
         }
+    }
+
+    public Class getEndpointInputType(String service) {
+        return endpointInputTypes.get(service);
     }
 }

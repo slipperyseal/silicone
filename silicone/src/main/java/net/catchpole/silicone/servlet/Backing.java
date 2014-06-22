@@ -24,6 +24,7 @@ public class Backing {
     private String pathOffset;
     private Path path;
     private String auth;
+    private Object requestPayload;
 
     public Artefacts getArtefacts() {
         return artefacts;
@@ -79,5 +80,13 @@ public class Backing {
 
     public void setAuth(String auth) {
         this.auth = auth;
+    }
+
+    public Object getRequestPayload() {
+        return requestPayload;
+    }
+
+    public void setRequestPayload(Object requestPayload) {
+        this.requestPayload = requestPayload;
     }
 }

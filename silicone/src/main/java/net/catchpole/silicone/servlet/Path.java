@@ -88,6 +88,10 @@ public class Path implements Iterable<String> {
         return this.list.remove(index);
     }
 
+    public String get(int index) {
+        return this.list.get(index);
+    }
+
     public int getSize() {
         return this.list.size();
     }

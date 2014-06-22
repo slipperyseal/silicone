@@ -14,6 +14,7 @@ package net.catchpole.silicone.render;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import net.catchpole.silicone.action.Endpoint;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.servlet.Backing;
 import net.catchpole.silicone.servlet.Path;
@@ -22,17 +23,20 @@ import org.codehaus.jackson.map.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class JsonObjectRender implements Render {
-    private final Object object;
-    private ObjectMapper objectMapper = new ObjectMapper();
+public class JsonEndpointRender implements Render {
+    private final Endpoint endpoint;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public JsonObjectRender(Object object) {
-        this.object = object;
+    public JsonEndpointRender(Endpoint endpoint) {
+        this.endpoint = endpoint;
     }
 
     public void render(OutputStream os, Path path, Backing backing) throws IOException {
         try {
-            objectMapper.writeValue(os, object);
+            Object response = endpoint.handle(backing.getRequestPayload());
+            if (response != null) {
+                objectMapper.writeValue(os, response);
+            }
         } catch (Exception e) {
             throw Throw.unchecked(e);
         }

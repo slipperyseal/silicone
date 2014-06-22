@@ -15,6 +15,7 @@ package net.catchpole.silicone;
 //   limitations under the License.
 
 import net.catchpole.silicone.action.Action;
+import net.catchpole.silicone.action.Endpoint;
 import net.catchpole.silicone.render.Render;
 
 public interface SiliconeConfig {
@@ -32,5 +33,5 @@ public interface SiliconeConfig {
 
     public void registerArtefact(Class clazz);
 
-    public void registerGlobalEndpoint(Object artefact);
+    public void registerGlobalEndpoint(Endpoint endpoint);
 }

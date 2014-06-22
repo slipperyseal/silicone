@@ -20,12 +20,9 @@ import net.catchpole.silicone.action.PathFilterArtefacts;
 import net.catchpole.silicone.lang.BuildNumber;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.lang.Uid;
+import net.catchpole.silicone.render.JsonEndpointRender;
 import net.catchpole.silicone.render.Render;
 import net.catchpole.silicone.render.RenderSelector;
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -33,7 +30,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class SiliconeServlet extends HttpServlet {
     private final BuildNumber buildNumber = new BuildNumber();
@@ -96,7 +92,6 @@ public class SiliconeServlet extends HttpServlet {
 
         backing.setPathOffset(this.relativePathOffset.getOffset(path.getDepth()));
 
-        //Path renderPath = renderSelector.findPath(path);
         Render render = renderSelector.find(path);
         if (render == null) {
             render = renderSelector.find(new Path());
@@ -104,6 +99,11 @@ public class SiliconeServlet extends HttpServlet {
             httpServletResponse.setStatus(404);
         } else {
             backing.setStatus("200");
+
+            if (render instanceof JsonEndpointRender) {
+                InputLoader inputLoader = new InputLoader(httpServletRequest);
+                backing.setRequestPayload(inputLoader.parseJson(siliconeConfig.getEndpointInputType(path.get(2))));
+            }
 
             RequestScope requestScope = sessionTracker.startRequestScope(httpServletRequest, httpServletResponse, actions);
 
@@ -136,22 +136,4 @@ public class SiliconeServlet extends HttpServlet {
         return -1;
     }
 
-    private InputStream getUpload(HttpServletRequest request) throws IOException{
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if (isMultipart) {
-            try {
-                ServletFileUpload upload = new ServletFileUpload();
-                FileItemIterator fileItemIterator = upload.getItemIterator(request);
-                while (fileItemIterator.hasNext()) {
-                    FileItemStream item = fileItemIterator.next();
-                    if (!item.isFormField()) {
-                        return item.openStream();
-                    }
-                }
-            } catch (FileUploadException fe) {
-                throw new RuntimeException(fe);
-            }
-        }
-        return null;
-    }
 }
