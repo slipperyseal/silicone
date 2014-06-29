@@ -26,6 +26,14 @@ public class UidGenerator {
         return new Values().toHexString(getUidBytes(byteLength));
     }
 
+    public String getSecurityUid() {
+        return getUid(20);
+    }
+
+    public String getPublicUid() {
+        return getUid(8);
+    }
+
     public byte[] getUidBytes(int byteLength) {
         byte[] uid = new byte[byteLength];
         random.nextBytes(uid);

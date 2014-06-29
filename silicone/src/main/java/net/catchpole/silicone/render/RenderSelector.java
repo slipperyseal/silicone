@@ -34,7 +34,6 @@ public class RenderSelector {
         if (render != null) {
             return render;
         }
-// todo: disable path search
 //        Path findPath = new Path(path);
 //        while (findPath.removeLast()) {
 //            render = renderMap.get(findPath);

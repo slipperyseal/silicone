@@ -21,6 +21,7 @@ public class UidGeneratorTest {
     @Test
     public void testUidGenerator() {
         UidGenerator uidGenerator = new UidGenerator();
+
         byte[] bytes = uidGenerator.getUidBytes(8);
         TestCase.assertEquals(8, bytes.length);
         TestCase.assertEquals(toHexString(bytes), new Values().toHexString(bytes));
@@ -32,6 +33,9 @@ public class UidGeneratorTest {
         for (int x=0;x<20;x++) {
             System.out.println(uidGenerator.getTimeUid());
         }
+
+        TestCase.assertEquals(40, uidGenerator.getSecurityUid().length());
+        TestCase.assertEquals(16, uidGenerator.getPublicUid().length());
     }
 
     public String toHexString(byte[] bytes) {

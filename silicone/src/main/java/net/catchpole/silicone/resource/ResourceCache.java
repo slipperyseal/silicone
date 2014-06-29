@@ -63,13 +63,11 @@ public class ResourceCache implements ResourceSource {
             if (is == null) {
                 return null;
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(1024);
             try {
-                Spool.spool(is, baos);
+                bytes = new Spool().spoolToByteArray(is);
             } catch (IOException ioe) {
                 return null;
             }
-            bytes = baos.toByteArray();
             // only synchronize here, not around slow resource load
             synchronized (resources) {
                 if (!resources.containsKey(name)) {

@@ -20,27 +20,41 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public final class Spool {
-    private Spool() {
+    private final byte[] spoolBuffer;
+
+    public Spool() {
+        this(4096);
     }
 
-    public static void spool(InputStream is, OutputStream os) throws IOException {
-        spool(is, os, 4096);
+    public Spool(int bufferSize) {
+        this.spoolBuffer = new byte[bufferSize];
     }
 
-    public static void spool(InputStream is, OutputStream os, int spoolSize) throws IOException {
-        spool(is, os, new byte[spoolSize]);
+    public Spool(byte[] spoolBuffer) {
+        this.spoolBuffer = spoolBuffer;
     }
 
-    public static void spool(InputStream is, OutputStream os, byte[] spoolBuffer) throws IOException {
+    public void spool(InputStream is, OutputStream os) throws IOException {
         int l;
         while ((l = is.read(spoolBuffer, 0, spoolBuffer.length)) != -1) {
             os.write(spoolBuffer, 0, l);
         }
     }
 
-    public static byte[] spoolToByteArray(InputStream is) throws IOException {
-        final ByteArrayOutputStream baos = new ByteArrayOutputStream(2048);
-        spool(is, baos);
+    public byte[] spoolToByteArray(InputStream is) throws IOException {
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream(spoolBuffer.length);
+        this.spool(is, baos);
         return baos.toByteArray();
+    }
+
+    public void spoolLimited(InputStream is, OutputStream os, long limit) throws IOException {
+        int l;
+        limit++; // spooling exactly limit allowed. fail at limit + 1
+        while ((l = is.read(spoolBuffer, 0, spoolBuffer.length < limit ? spoolBuffer.length : (int)limit)) != -1) {
+            if ((limit -= l) <= 0) {
+                throw new IOException("spooling limit reached");
+            }
+            os.write(spoolBuffer, 0, l);
+        }
     }
 }

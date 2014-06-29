@@ -27,7 +27,7 @@ public class BuildNumber {
         }
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            Spool.spool(inputStream, baos);
+            new Spool().spool(inputStream, baos);
             try {
                 build = baos.toString("utf-8").trim();
             } finally {
@@ -41,5 +41,4 @@ public class BuildNumber {
     public String getBuild() {
         return build;
     }
-
 }

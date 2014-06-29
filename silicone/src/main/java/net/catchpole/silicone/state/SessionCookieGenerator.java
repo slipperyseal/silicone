@@ -21,6 +21,6 @@ public class SessionCookieGenerator implements UidSource {
 
     @Override
     public String createUID() {
-        return uidGenerator.getUid(20);
+        return uidGenerator.getSecurityUid();
     }
 }

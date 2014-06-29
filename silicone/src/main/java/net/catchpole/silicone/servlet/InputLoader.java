@@ -1,14 +1,5 @@
 package net.catchpole.silicone.servlet;
 
-import org.apache.commons.fileupload.FileItemIterator;
-import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-
 //   Copyright 2014 catchpole.net
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +14,16 @@ import java.io.*;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import net.catchpole.silicone.lang.Spool;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+
 public class InputLoader {
     private final HttpServletRequest httpServletRequest;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,13 +33,13 @@ public class InputLoader {
     }
 
     public Object parseJson(Class type) throws IOException {
-        InputStream inputStream = getInputStream();
+        InputStream inputStream = getInputStreamBuffered(64*1024);
         return inputStream == null ? null : objectMapper.readValue(inputStream, type);
     }
 
-    private InputStream getInputStream() throws IOException {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        spool(getInputStreamActual(), byteArrayOutputStream);
+    private InputStream getInputStreamBuffered(long limit) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(2048);
+        new Spool().spoolLimited(getInputStreamActual(), byteArrayOutputStream, limit);
         byte[] data = byteArrayOutputStream.toByteArray();
         return data.length == 0 ? null : new ByteArrayInputStream(data);
     }
@@ -61,13 +62,5 @@ public class InputLoader {
             return httpServletRequest.getInputStream();
         }
         return null;
-    }
-
-    public static void spool(InputStream is, OutputStream os) throws IOException {
-        byte[] spoolBuffer = new byte[4096];
-        int l;
-        while ((l = is.read(spoolBuffer, 0, spoolBuffer.length)) != -1) {
-            os.write(spoolBuffer, 0, l);
-        }
     }
 }

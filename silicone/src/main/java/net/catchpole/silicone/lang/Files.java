@@ -103,7 +103,7 @@ public final class Files {
     public static void spoolResource(Class clazz, String resource, OutputStream os) throws IOException {
         InputStream is = clazz.getResourceAsStream(resource);
         try {
-            Spool.spool(is, os);
+            new Spool().spool(is, os);
         } finally {
             is.close();
         }
