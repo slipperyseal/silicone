@@ -14,6 +14,7 @@ package net.catchpole.silicone.render;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import net.catchpole.silicone.action.RequestDetails;
 import net.catchpole.silicone.dom.ModelDocument;
 import net.catchpole.silicone.dom.ModelDocumentBuilder;
 import net.catchpole.silicone.dom.XsdBuilder;
@@ -22,7 +23,6 @@ import net.catchpole.silicone.dom.model.BeanModel;
 import net.catchpole.silicone.dom.transform.XmlTransform;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.servlet.Backing;
-import net.catchpole.silicone.servlet.Path;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -42,7 +42,7 @@ public class XmlRender implements Render {
         }
     }
 
-    public void render(OutputStream os, Path path, Backing backing) throws IOException {
+    public void render(OutputStream os, Backing backing, RequestDetails requestDetails) throws IOException {
         Object object = backing.getArtefacts().get(clazz);
         if (object == null) {
             throw new IllegalArgumentException();

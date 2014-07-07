@@ -14,6 +14,7 @@ package net.catchpole.silicone.render;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import net.catchpole.silicone.action.RequestDetails;
 import net.catchpole.silicone.dom.ModelDocument;
 import net.catchpole.silicone.dom.ModelDocumentBuilder;
 import net.catchpole.silicone.dom.XsdBuilder;
@@ -24,7 +25,6 @@ import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.resource.ResourceSource;
 import net.catchpole.silicone.resource.ResourceURIResolver;
 import net.catchpole.silicone.servlet.Backing;
-import net.catchpole.silicone.servlet.Path;
 
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -54,11 +54,11 @@ public class TemplateRender implements Render {
         }
     }
 
-    public void render(OutputStream os, Path path, Backing backing) throws IOException {
-        this.render(os, path, (Object)backing);
+    public void render(OutputStream os, Backing backing, RequestDetails requestDetails) throws IOException {
+        this.render(os, (Object)backing, requestDetails);
     }
 
-    public void render(OutputStream os, Path path, Object backing) throws IOException {
+    public void render(OutputStream os, Object backing, RequestDetails requestDetails) throws IOException {
         try {
             ModelDocument document = modelDocumentBuilder.newDocument(new BeanModel(beanDecoder, backing));
 
