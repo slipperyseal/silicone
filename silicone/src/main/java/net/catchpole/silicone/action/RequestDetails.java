@@ -1,4 +1,4 @@
-package net.catchpole.silicone.render;
+package net.catchpole.silicone.action;
 
 //   Copyright 2014 catchpole.net
 //
@@ -14,14 +14,10 @@ package net.catchpole.silicone.render;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.action.RequestDetails;
-import net.catchpole.silicone.servlet.Backing;
+import net.catchpole.silicone.servlet.Path;
 
-import java.io.IOException;
-import java.io.OutputStream;
+public interface RequestDetails {
+    public String getOrigin();
 
-public interface Render {
-    public void render(OutputStream os, Backing backing, RequestDetails requestDetails) throws IOException;
-
-    public String getContentType();
+    public Path getPath();
 }

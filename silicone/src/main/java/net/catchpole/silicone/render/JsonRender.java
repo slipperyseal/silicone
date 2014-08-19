@@ -14,6 +14,7 @@ package net.catchpole.silicone.render;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import net.catchpole.silicone.action.RequestDetails;
 import net.catchpole.silicone.dom.model.BeanDecoder;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.servlet.Backing;
@@ -31,12 +32,13 @@ public class JsonRender implements Render {
         this.clazz = clazz;
     }
 
-    public void render(OutputStream os, Path path, Backing backing) throws IOException {
+    public void render(OutputStream os, Backing backing, RequestDetails requestDetails) throws IOException {
         Object object = backing.getArtefacts().get(clazz);
         if (object == null) {
             throw new IllegalArgumentException();
         }
 
+        Path path = requestDetails.getPath();
         if (path.getSize() > 0) {
             BeanDecoder beanDecoder = new BeanDecoder();
             for (String name : path) {

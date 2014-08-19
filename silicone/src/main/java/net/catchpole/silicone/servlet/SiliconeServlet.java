@@ -17,6 +17,7 @@ package net.catchpole.silicone.servlet;
 import net.catchpole.silicone.SiliconeSetup;
 import net.catchpole.silicone.action.Actions;
 import net.catchpole.silicone.action.PathFilterArtefacts;
+import net.catchpole.silicone.action.RequestDetails;
 import net.catchpole.silicone.lang.BuildNumber;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.lang.Uid;
@@ -79,9 +80,9 @@ public class SiliconeServlet extends HttpServlet {
     }
 
     private void handle(final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) throws Exception {
-        Backing backing = new Backing();
+        final Backing backing = new Backing();
         backing.setBuild(buildNumber.getBuild());
-        Path path = new Path(httpServletRequest);
+        final Path path = new Path(httpServletRequest);
         backing.setPath(path);
 
         // redirect /webappname to /webappname/
@@ -126,7 +127,17 @@ public class SiliconeServlet extends HttpServlet {
 
         httpServletResponse.setContentType(render.getContentType());
         try {
-            render.render(httpServletResponse.getOutputStream(), path.getTrailingPath(path), backing);
+            render.render(httpServletResponse.getOutputStream(), backing, new RequestDetails() {
+                @Override
+                public String getOrigin() {
+                    return httpServletRequest.getRemoteAddr();
+                }
+
+                @Override
+                public Path getPath() {
+                    return path.getTrailingPath(path);
+                }
+            });
         } catch (IllegalArgumentException iae) {
             httpServletResponse.setStatus(403);
         }
@@ -135,5 +146,4 @@ public class SiliconeServlet extends HttpServlet {
     protected long getLastModified(HttpServletRequest req) {
         return -1;
     }
-
 }
