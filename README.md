@@ -9,6 +9,8 @@ What does Silicone do?
 
 * Manages long term authentication cookies across multiple clients. Abstracts the anonymous, authenticated and non-authenticated ("remember me") lifecycle.
 
+* Comet (long polling) API endpoints.
+
 * A model view binding based on Actions and Artefacts. Actions are similar to traditional controllers and operate on beans called Artefacts. They are called Artefacts because of the way they are managed in request life-cycle. They may be transient for anonymous requests or may be cycled back through into the page context during what appear to be statefull actions, even where they are not. Actions are only available to requests which should have access to them.
 
 * A novel approach to data binding.  Most traditional web technologies don't consider HTML a first class concept. Rendering is subcontracted out for you to implement (what could go wrong?).

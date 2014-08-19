@@ -25,6 +25,18 @@ public class Throw {
 
     @SuppressWarnings("unchecked")
     private static <T extends Throwable> void abyss(Throwable t) throws T {
+        //
+        //       _.-^^---....,,--
+        //   _--                  --_
+        //  <                        >)
+        //  |                         |
+        //   \._                   _./
+        //      ```--. . , ; .--'''
+        //            | |   |
+        //         .-=||  | |=-.
+        //         `-=#$%&%$#=-'
+        //            | ;  :|
+        //_______.,-#%&$@%#&#~,.________
         throw (T) t;
     }
 }
