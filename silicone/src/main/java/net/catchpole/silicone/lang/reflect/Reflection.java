@@ -23,6 +23,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Reflection {
+    private static Method[] objectMethods = Object.class.getMethods();
+
     public Reflection() {
     }
 
@@ -70,7 +72,7 @@ public class Reflection {
     public Method[] getNonObjectMethods(Class clazz) {
         List<Method> list = new ArrayList<Method>();
         for (Method method : clazz.getMethods()) {
-            if (!methodsMatch(method, Object.class.getMethods())) {
+            if (!methodsMatch(method, objectMethods)) {
                 list.add(method);
             }
         }

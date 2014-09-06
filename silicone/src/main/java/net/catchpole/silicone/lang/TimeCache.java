@@ -38,11 +38,11 @@ public class TimeCache<K,V> {
         if (value == null) {
             return null;
         }
-        V v = value.getValue();
-        if (v == null) {
+        V actual = value.getValue();
+        if (actual == null) {
             map.remove(key);
         }
-        return v;
+        return actual;
     }
 
     class Value<V> {

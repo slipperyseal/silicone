@@ -18,20 +18,21 @@ import net.catchpole.silicone.SessionPersist;
 import net.catchpole.silicone.lang.TimeCache;
 
 public class CacheSessionPersist implements SessionPersist {
-    private TimeCache<String,String> cache = new TimeCache<String, String>(60000);
-    private SessionPersist sessionPersist;
+    private final TimeCache<String,String> timeCache;
+    private final SessionPersist sessionPersist;
 
-    public CacheSessionPersist(SessionPersist sessionPersist) {
+    public CacheSessionPersist(SessionPersist sessionPersist, int milliseconds) {
+        this.timeCache = new TimeCache<String, String>(milliseconds);
         this.sessionPersist = sessionPersist;
     }
 
     @Override
     public synchronized String getSession(String key) {
-        String value = cache.get(key);
-        if (key == null) {
+        String value = timeCache.get(key);
+        if (value == null) {
             value = sessionPersist.getSession(key);
             if (value != null) {
-                cache.put(key, value);
+                timeCache.put(key, value);
             }
         }
         return value;
@@ -39,13 +40,13 @@ public class CacheSessionPersist implements SessionPersist {
 
     @Override
     public synchronized void setSession(String key, String value) {
-        cache.put(key, value);
+        timeCache.put(key, value);
         sessionPersist.setSession(key, value);
     }
 
     @Override
     public synchronized void delete(String key) {
-        cache.remove(key);
+        timeCache.remove(key);
         sessionPersist.delete(key);
     }
 }

@@ -16,8 +16,8 @@ package net.catchpole.silicone.servlet;
 
 import net.catchpole.silicone.SiliconeSetup;
 import net.catchpole.silicone.action.Actions;
+import net.catchpole.silicone.action.HttpRequestDetails;
 import net.catchpole.silicone.action.PathFilterArtefacts;
-import net.catchpole.silicone.action.RequestDetails;
 import net.catchpole.silicone.lang.BuildNumber;
 import net.catchpole.silicone.lang.Throw;
 import net.catchpole.silicone.lang.Uid;
@@ -127,17 +127,7 @@ public class SiliconeServlet extends HttpServlet {
 
         httpServletResponse.setContentType(render.getContentType());
         try {
-            render.render(httpServletResponse.getOutputStream(), backing, new RequestDetails() {
-                @Override
-                public String getOrigin() {
-                    return httpServletRequest.getRemoteAddr();
-                }
-
-                @Override
-                public Path getPath() {
-                    return path.getTrailingPath(path);
-                }
-            });
+            render.render(httpServletResponse.getOutputStream(), backing, new HttpRequestDetails(httpServletRequest));
         } catch (IllegalArgumentException iae) {
             httpServletResponse.setStatus(403);
         }

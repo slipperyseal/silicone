@@ -16,10 +16,27 @@ package net.catchpole.silicone.action;
 
 import net.catchpole.silicone.servlet.Path;
 
-public interface RequestDetails {
-    public String getOrigin();
+import javax.servlet.http.HttpServletRequest;
 
-    public Path getPath();
+public class HttpRequestDetails implements RequestDetails {
+    private HttpServletRequest httpServletRequest;
 
-    public String getHeader(String name);
+    public HttpRequestDetails(HttpServletRequest httpServletRequest) {
+        this.httpServletRequest = httpServletRequest;
+    }
+
+    @Override
+    public String getOrigin() {
+        return httpServletRequest.getRemoteAddr();
+    }
+
+    @Override
+    public Path getPath() {
+        return new Path(httpServletRequest);
+    }
+
+    @Override
+    public String getHeader(String name) {
+        return httpServletRequest.getHeader(name);
+    }
 }

@@ -25,6 +25,6 @@ public class ServletContextResourceSource implements ResourceSource {
         this.servletContext = servletContext;
     }
     public InputStream getResourceStream(String resource) throws IOException {
-        return servletContext.getResourceAsStream("WEB-INF/" + resource);
+        return servletContext.getResourceAsStream("/WEB-INF/" + resource);
     }
 }
