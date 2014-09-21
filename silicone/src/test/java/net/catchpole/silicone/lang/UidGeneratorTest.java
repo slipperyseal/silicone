@@ -28,7 +28,7 @@ public class UidGeneratorTest {
         TestCase.assertEquals(32, uidGenerator.getUid(16).length());
 
         String uid = uidGenerator.getUid(8);
-        TestCase.assertEquals(uid.toUpperCase(), uid);
+        TestCase.assertEquals(uid.toLowerCase(), uid);
 
         for (int x=0;x<20;x++) {
             System.out.println(uidGenerator.getTimeUid());
@@ -43,6 +43,6 @@ public class UidGeneratorTest {
         for (byte b : bytes) {
             sb.append(String.format("%02X", b));
         }
-        return sb.toString();
+        return sb.toString().toLowerCase();
     }
 }
