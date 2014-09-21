@@ -25,6 +25,6 @@ public class Values {
     }
 
     private char hexChar(int c) {
-        return (char)(c <= 9 ? (c + '0') : (c - 10 + 'A'));
+        return (char)(c <= 9 ? (c + '0') : (c - 10 + 'a'));
     }
 }
