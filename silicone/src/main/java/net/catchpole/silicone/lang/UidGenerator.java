@@ -20,7 +20,6 @@ import java.util.Date;
 
 public class UidGenerator {
     private static final SecureRandom random = new SecureRandom();
-    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
 
     public String getUid(int byteLength) {
         return new Values().toHexString(getUidBytes(byteLength));
@@ -41,8 +40,7 @@ public class UidGenerator {
     }
 
     public String getTimeUid() {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormatter.format(new Date()) + getUid(4);
     }
-
-
 }
