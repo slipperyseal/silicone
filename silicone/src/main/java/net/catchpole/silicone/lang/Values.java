@@ -18,13 +18,29 @@ public class Values {
     public String toHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder(bytes.length*2);
         for (byte b : bytes) {
-            sb.append(hexChar((b&0xff)>>4));
-            sb.append(hexChar(b & 0x0f));
+            sb.append(toHexChar((b & 0xff) >> 4));
+            sb.append(toHexChar(b & 0x0f));
         }
         return sb.toString();
     }
 
-    private char hexChar(int c) {
+    public String toHexString(int value) {
+        char[] chars = new char[8];
+        for (int x=0;x<8;x++) {
+            chars[x] = toHexChar((value >> ((7 - x) * 4) & 0x0f));
+        }
+        return new String(chars);
+    }
+
+    public String toHexString(long value) {
+        char[] chars = new char[16];
+        for (int x=0;x<16;x++) {
+            chars[x] = toHexChar((int)(value >> ((15 - x) * 4) & 0x0f));
+        }
+        return new String(chars);
+    }
+
+    public char toHexChar(int c) {
         return (char)(c <= 9 ? (c + '0') : (c - 10 + 'a'));
     }
 }
