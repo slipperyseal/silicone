@@ -24,7 +24,7 @@ public class UidGeneratorTest {
 
         byte[] bytes = uidGenerator.getUidBytes(8);
         TestCase.assertEquals(8, bytes.length);
-        TestCase.assertEquals(toHexString(bytes), new Values().toHexString(bytes));
+        TestCase.assertEquals(toLowerCaseHexString(bytes), new Values().toHexString(bytes));
         TestCase.assertEquals(32, uidGenerator.getUid(16).length());
 
         String uid = uidGenerator.getUid(8);
@@ -38,7 +38,7 @@ public class UidGeneratorTest {
         TestCase.assertEquals(16, uidGenerator.getPublicUid().length());
     }
 
-    public String toHexString(byte[] bytes) {
+    public String toLowerCaseHexString(byte[] bytes) {
         StringBuilder sb = new StringBuilder(bytes.length*2);
         for (byte b : bytes) {
             sb.append(String.format("%02X", b));
