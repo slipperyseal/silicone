@@ -64,7 +64,7 @@ public class Mapper {
         return false;
     }
 
-    public <T extends Object> T getObjectValue(Class<T> clazz, String value) {
+    public <T> T getObjectValue(Class<T> clazz, String value) {
         if (value == null) {
             return null;
         }
@@ -90,7 +90,10 @@ public class Mapper {
                 return (T)new Boolean(Boolean.parseBoolean(value));
             }
             if (clazz.isArray()) {
-                return (T)(Object)DatatypeConverter.parseHexBinary(value);
+                return (T)DatatypeConverter.parseHexBinary(value);
+            }
+            if (clazz.isArray() && clazz.getComponentType().equals(Byte.TYPE)) {
+                return (T)values.hexToBytes(value);
             }
         } catch (Exception e) {
             throw Throw.unchecked(e);

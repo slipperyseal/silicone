@@ -92,8 +92,8 @@ public class SiliconeConfigBridge implements SiliconeConfig {
     public void registerArtefact(Class artefactClass) {
         if (reflection.findAnnotation(artefactClass, Endpoint.class) != null) {
             String service = artefactClass.getSimpleName().toLowerCase();
-            this.addRender("service/xml/" + service, new XmlRender(artefactClass));
-            this.addRender("service/json/" + service, new JsonRender(artefactClass));
+            this.addRender("api/xml/" + service, new XmlRender(artefactClass));
+            this.addRender("api/json/" + service, new JsonRender(artefactClass));
         }
     }
 

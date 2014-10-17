@@ -15,5 +15,10 @@ public class ValuesTest {
         TestCase.assertEquals("0000000000000000", values.toHexString(0L));
         TestCase.assertEquals("abcdef0123456789", values.toHexString(0xabcdef0123456789L));
         TestCase.assertEquals("ffffffffffffffff", values.toHexString(-1L));
+
+        byte[] bytes = values.hexToBytes("001f");
+        TestCase.assertEquals(2, bytes.length);
+        TestCase.assertEquals(0x00, bytes[0]);
+        TestCase.assertEquals(0x1f, bytes[1]);
     }
 }

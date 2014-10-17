@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class TemplateRender implements Render {
-    private final boolean prod = true;
+    private final boolean prod = false;
     private final BeanDecoder beanDecoder = new BeanDecoder();
     private final ModelDocumentBuilder modelDocumentBuilder;
     private final Templates transformer;

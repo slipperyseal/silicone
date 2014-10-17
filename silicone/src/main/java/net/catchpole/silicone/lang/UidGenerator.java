@@ -26,11 +26,19 @@ public class UidGenerator {
     }
 
     public String getSecurityUid() {
-        return getUid(20);
+        return getUid(getSecurityUidByteLength());
+    }
+
+    public int getSecurityUidByteLength() {
+        return 20;
     }
 
     public String getPublicUid() {
-        return getUid(8);
+        return getUid(getPublicUidByteLength());
+    }
+
+    public int getPublicUidByteLength() {
+        return 8;
     }
 
     public byte[] getUidBytes(int byteLength) {
