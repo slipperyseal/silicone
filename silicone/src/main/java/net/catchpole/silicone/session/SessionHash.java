@@ -14,11 +14,16 @@ package net.catchpole.silicone.session;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+import javax.persistence.Id;
+import java.util.Date;
+
 public class SessionHash {
+    @Id
     private String key;
     private String salt;
     private String hash;
-    private String uid;
+    private Date created;
+    private String client;
 
     public String getKey() {
         return key;
@@ -42,5 +47,21 @@ public class SessionHash {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public String getClient() {
+        return client;
+    }
+
+    public void setClient(String client) {
+        this.client = client;
     }
 }

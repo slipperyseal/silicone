@@ -19,6 +19,8 @@ import net.catchpole.silicone.lang.Values;
 import net.catchpole.silicone.security.AuthenticationHasher;
 import net.catchpole.silicone.security.Hash;
 
+import java.util.Date;
+
 public class SessionCookieGenerator {
     private final AuthenticationHasher authenticationHasher = new AuthenticationHasher();
     private final UidGenerator uidGenerator = new UidGenerator();
@@ -38,6 +40,7 @@ public class SessionCookieGenerator {
         Hash hash = authenticationHasher.createHash(token);
         sessionHash.setSalt(values.toHexString(hash.getSalt()));
         sessionHash.setHash(values.toHexString(hash.getHash()));
+        sessionHash.setCreated(new Date());
 
         sessionHashPersist.persist(sessionHash);
 
