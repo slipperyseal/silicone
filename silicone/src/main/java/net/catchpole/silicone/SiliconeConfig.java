@@ -17,9 +17,10 @@ package net.catchpole.silicone;
 import net.catchpole.silicone.action.Action;
 import net.catchpole.silicone.action.Endpoint;
 import net.catchpole.silicone.render.Render;
+import net.catchpole.silicone.session.SessionHashPersist;
 
 public interface SiliconeConfig {
-    public void setSessionPersist(SessionPersist sessionPersist);
+    public void setSessionHashPersist(SessionHashPersist sessionHashPersist);
 
     public void addAction(Action action);
 

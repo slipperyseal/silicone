@@ -24,6 +24,8 @@ import net.catchpole.silicone.lang.Uid;
 import net.catchpole.silicone.render.JsonEndpointRender;
 import net.catchpole.silicone.render.Render;
 import net.catchpole.silicone.render.RenderSelector;
+import net.catchpole.silicone.session.MemorySessionHashPersist;
+import net.catchpole.silicone.session.MemoryValidatedCookies;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -51,7 +53,7 @@ public class SiliconeServlet extends HttpServlet {
             SiliconeSetup siliconeSetup = (SiliconeSetup)Class.forName(setupClassName).newInstance();
             siliconeSetup.setupSilicon(siliconeConfig);
 
-            this.sessionTracker = new SessionTracker(siliconeConfig.getSessionPersist(), actions);
+            this.sessionTracker = new SessionTracker(new MemoryValidatedCookies(), new MemorySessionHashPersist(), actions);
             this.renderSelector = siliconeConfig.getRenderSelector();
         } catch (Exception e) {
             throw Throw.unchecked(e);

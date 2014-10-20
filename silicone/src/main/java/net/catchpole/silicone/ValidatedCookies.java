@@ -1,4 +1,4 @@
-package net.catchpole.silicone.session;
+package net.catchpole.silicone;
 
 //   Copyright 2014 catchpole.net
 //
@@ -14,26 +14,10 @@ package net.catchpole.silicone.session;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.SessionPersist;
+public interface ValidatedCookies {
+    public boolean contains(String cookie);
 
-import java.util.HashMap;
-import java.util.Map;
+    public void put(String cookie);
 
-public class MemorySessionPersist implements SessionPersist {
-    private Map<String,String> map = new HashMap<String, String>();
-
-    @Override
-    public synchronized String getSession(String key) {
-        return map.get(key);
-    }
-
-    @Override
-    public synchronized void setSession(String key, String value) {
-        map.put(key,value);
-    }
-
-    @Override
-    public synchronized void delete(String key) {
-        map.remove(key);
-    }
+    public void delete(String cookie);
 }

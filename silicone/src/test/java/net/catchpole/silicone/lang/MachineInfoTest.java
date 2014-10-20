@@ -1,4 +1,4 @@
-package net.catchpole.silicone.state;
+package net.catchpole.silicone.lang;
 
 //   Copyright 2014 catchpole.net
 //
@@ -14,13 +14,13 @@ package net.catchpole.silicone.state;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.lang.UidGenerator;
+import org.junit.Test;
 
-public class SessionCookieGenerator implements UidSource {
-    private UidGenerator uidGenerator = new UidGenerator();
-
-    @Override
-    public String createUID() {
-        return uidGenerator.getSecurityUid();
+public class MachineInfoTest {
+    @Test
+    public void testMachineInfo() {
+        MachineInfo machineInfo = new MachineInfo();
+        System.out.println(machineInfo.getServer());
+        System.out.println(machineInfo.getHexAddress());
     }
 }

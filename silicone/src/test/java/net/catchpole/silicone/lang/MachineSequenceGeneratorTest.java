@@ -1,4 +1,4 @@
-package net.catchpole.silicone;
+package net.catchpole.silicone.lang;
 
 //   Copyright 2014 catchpole.net
 //
@@ -14,10 +14,15 @@ package net.catchpole.silicone;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-public interface SessionPersist {
-    public String getSession(String key);
+import org.junit.Test;
 
-    public void setSession(String key, String value);
+public class MachineSequenceGeneratorTest {
+    @Test
+    public void testServerSequence() {
+        MachineSequenceGenerator machineSequenceGenerator = new MachineSequenceGenerator(new MachineInfo());
+        for (int x=0;x<10;x++) {
+            System.out.println(machineSequenceGenerator.getServerUid());
+        }
+    }
 
-    public void delete(String key);
 }

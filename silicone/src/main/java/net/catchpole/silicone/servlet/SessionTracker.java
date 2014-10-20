@@ -14,12 +14,12 @@ package net.catchpole.silicone.servlet;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.SessionPersist;
+import net.catchpole.silicone.ValidatedCookies;
 import net.catchpole.silicone.action.Actions;
 import net.catchpole.silicone.action.Artefacts;
 import net.catchpole.silicone.action.MapArtefacts;
-import net.catchpole.silicone.state.SessionCookieGenerator;
-import net.catchpole.silicone.state.UidSource;
+import net.catchpole.silicone.session.SessionCookieGenerator;
+import net.catchpole.silicone.session.SessionHashPersist;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -27,12 +27,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SessionTracker {
     private static final String COOKIENAME = "SILICONE";
-    private final SessionPersist sessionPersist;
+    private final ValidatedCookies validatedCookies;
     private final Actions actions;
-    private final UidSource uidSource = new SessionCookieGenerator();
+    private final SessionCookieGenerator sessionCookieGenerator;
 
-    public SessionTracker(SessionPersist sessionPersist, Actions actions) {
-        this.sessionPersist = sessionPersist;
+    public SessionTracker(ValidatedCookies validatedCookies, SessionHashPersist sessionHashPersist, Actions actions) {
+        this.validatedCookies = validatedCookies;
+        this.sessionCookieGenerator = new SessionCookieGenerator(sessionHashPersist);
         this.actions = actions;
     }
 
@@ -41,10 +42,16 @@ public class SessionTracker {
         final RequestScope requestScope = new RequestScope();
         String cookie = findTrackingCookie(httpServletRequest);
 
-        String value = sessionPersist.getSession(cookie);
-        if (value == null) {
-            cookie = null;
-            removeTrackingCookie(httpServletRequest, httpServletResponse);
+        if (cookie != null) {
+            if (!validatedCookies.contains(cookie)) {
+                String key = sessionCookieGenerator.validateKey(cookie);
+                if (key != null) {
+                    validatedCookies.put(cookie);
+                } else {
+                    cookie = null;
+                    removeTrackingCookie(httpServletRequest, httpServletResponse);
+                }
+            }
         }
 
         requestScope.setCookie(cookie);
@@ -80,16 +87,17 @@ public class SessionTracker {
             }
 
             if (cookie == null) {
-                cookie = uidSource.createUID();
+                cookie = sessionCookieGenerator.generateSessionCookie();
                 requestScope.setCookie(cookie);
-                sessionPersist.setSession(cookie, "value");
+                validatedCookies.put(cookie);
                 addTrackingCookie(httpServletResponse, cookie);
             }
         } else {
             if (cookie != null) {
                 removeTrackingCookie(httpServletRequest, httpServletResponse);
                 requestScope.setCookie(null);
-                sessionPersist.delete(cookie);
+                validatedCookies.delete(cookie);
+                sessionCookieGenerator.delete(cookie);
             }
 
             if (requestScope.hadSessionClass()) {

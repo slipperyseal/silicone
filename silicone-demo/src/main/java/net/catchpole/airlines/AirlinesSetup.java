@@ -19,7 +19,6 @@ import net.catchpole.airlines.artefact.*;
 import net.catchpole.airlines.model.Flight;
 import net.catchpole.airlines.model.FlightBuilder;
 import net.catchpole.airlines.service.UserService;
-import net.catchpole.silicone.session.MemorySessionPersist;
 import net.catchpole.silicone.SiliconeConfig;
 import net.catchpole.silicone.SiliconeSetup;
 import net.catchpole.silicone.action.Action;
@@ -41,7 +40,6 @@ public class AirlinesSetup implements SiliconeSetup {
         siliconeConfig.addAction(new CheckInAction());
         siliconeConfig.addAction(new BookFlightAction(this.flights, this.bookingsMap));
         siliconeConfig.registerArtefact(Flights.class);
-        siliconeConfig.setSessionPersist(new MemorySessionPersist());
 
         siliconeConfig.setGlobalAction(new Action() {
             public void perform(Object object, Artefacts artefacts) {

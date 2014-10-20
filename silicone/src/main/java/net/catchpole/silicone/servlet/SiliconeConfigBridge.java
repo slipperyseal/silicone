@@ -14,7 +14,6 @@ package net.catchpole.silicone.servlet;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.SessionPersist;
 import net.catchpole.silicone.SiliconeConfig;
 import net.catchpole.silicone.action.Action;
 import net.catchpole.silicone.action.Actions;
@@ -22,7 +21,8 @@ import net.catchpole.silicone.action.Endpoint;
 import net.catchpole.silicone.lang.reflect.Reflection;
 import net.catchpole.silicone.render.*;
 import net.catchpole.silicone.resource.ServletContextResourceSource;
-import net.catchpole.silicone.session.MemorySessionPersist;
+import net.catchpole.silicone.session.MemorySessionHashPersist;
+import net.catchpole.silicone.session.SessionHashPersist;
 
 import javax.servlet.ServletConfig;
 import java.util.HashMap;
@@ -32,8 +32,8 @@ public class SiliconeConfigBridge implements SiliconeConfig {
     private final RenderSelector renderSelector = new RenderSelector();
     private final Actions actions;
     private final Reflection reflection = new Reflection();
-    private SessionPersist sessionPersist;
     private final Map<String,Class> endpointInputTypes = new HashMap<String, Class>();
+    private SessionHashPersist sessionHashPersist;
 
     public SiliconeConfigBridge(ServletConfig servletConfig, Actions actions) {
         this.actions = actions;
@@ -68,15 +68,15 @@ public class SiliconeConfigBridge implements SiliconeConfig {
         return renderSelector;
     }
 
-    public void setSessionPersist(SessionPersist sessionPersist) {
-        this.sessionPersist = sessionPersist;
+    public void setSessionHashPersist(SessionHashPersist sessionHashPersist) {
+        this.sessionHashPersist = sessionHashPersist;
     }
 
-    public SessionPersist getSessionPersist() {
-        if (sessionPersist == null) {
-            sessionPersist = new MemorySessionPersist();
+    public SessionHashPersist getSessionHashPersist() {
+        if (sessionHashPersist == null) {
+            sessionHashPersist = new MemorySessionHashPersist();
         }
-        return sessionPersist;
+        return sessionHashPersist;
     }
 
     public void registerGlobalEndpoint(Endpoint endpoint) {

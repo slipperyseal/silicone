@@ -1,4 +1,4 @@
-package net.catchpole.silicone.state;
+package net.catchpole.silicone.session;
 
 //   Copyright 2014 catchpole.net
 //
@@ -14,6 +14,26 @@ package net.catchpole.silicone.state;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-public interface UidSource {
-    public String createUID();
+import net.catchpole.silicone.ValidatedCookies;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class MemoryValidatedCookies implements ValidatedCookies {
+    private Set<String> hashSet = new HashSet<String>();
+
+    @Override
+    public synchronized boolean contains(String cookie) {
+        return hashSet.contains(cookie);
+    }
+
+    @Override
+    public synchronized void put(String cookie) {
+        hashSet.add(cookie);
+    }
+
+    @Override
+    public synchronized void delete(String cookie) {
+        hashSet.remove(cookie);
+    }
 }
