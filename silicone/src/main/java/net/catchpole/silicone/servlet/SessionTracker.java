@@ -14,7 +14,7 @@ package net.catchpole.silicone.servlet;
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-import net.catchpole.silicone.ValidatedCookies;
+import net.catchpole.silicone.session.ValidatedCookies;
 import net.catchpole.silicone.action.Actions;
 import net.catchpole.silicone.action.Artefacts;
 import net.catchpole.silicone.action.MapArtefacts;

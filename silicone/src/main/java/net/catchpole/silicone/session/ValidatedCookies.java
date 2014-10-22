@@ -1,4 +1,4 @@
-package net.catchpole.silicone;
+package net.catchpole.silicone.session;
 
 //   Copyright 2014 catchpole.net
 //
