@@ -33,7 +33,7 @@ What does Silicone not do?
 
 * Seal the gaps in showers, bathtubs and sinks.
 
-![Silicone](http://www.catchpole.net/googlecode/silicone.png "Silicone")
+![Silicone](http://www.catchpole.net/images/silicone.png "Silicone")
 
 Watch the walk though and demo at MelbJVM
 
