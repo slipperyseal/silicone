@@ -3,6 +3,9 @@ Silicone
 
 Single Page Controller
 
+NOTE: This project is rubbish. It was written by human excrement (not the excrement
+of a human, but more so, a person who's existence is the waste product of humanity)
+
 Silicone is a single page controller for stateless, scalable cloud applications. It uses a simple and novel model view binding which can be used by itself, or compliment client-side frameworks (think Angular). It can also be used to manage dynamic and static templating for content driven warehouses (think Twitter, Instagram or Pinterest).
 
 What does Silicone do?
@@ -32,8 +35,6 @@ What does Silicone not do?
 * Produce logs. Be noisy. Store anything on disk. Have many dependencies. Break for silly reasons.
 
 * Seal the gaps in showers, bathtubs and sinks.
-
-![Silicone](http://www.catchpole.net/images/silicone.png "Silicone")
 
 Watch the walk though and demo at MelbJVM
 
